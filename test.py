@@ -38,18 +38,18 @@ while True:
     # 预测动作，只选最优动作
     action = agent.predict(obs)
     # 图像太快休眠
-    # time.sleep(0.02)
+    # time.sleep(0.02) #延迟单位为秒
     # # 新建窗口显示分数
-    # observation = env.getScreenRGB()
-    # score  = env.score()
-    # # 格式转换
-    # observation = cv2.cvtColor(observation,cv2.COLOR_RGB2BGR)
-    # # 选择90度
-    # observation = cv2.transpose(observation)
-    # font = cv2.FONT_HERSHEY_SIMPLEX
-    # observation = cv2.putText(observation, "score:"+str(int(score)), (0, 30), font, 0.6, (0, 0, 255), 2)
-    # cv2.imshow("flappybird", observation)
-    # cv2.waitKey(10)
+    observation = env.getScreenRGB()
+    score  = env.score()
+    # 格式转换
+    observation = cv2.cvtColor(observation,cv2.COLOR_RGB2BGR)
+    # 选择90度
+    observation = cv2.transpose(observation)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    observation = cv2.putText(observation, "score:"+str(int(score)), (0, 30), font, 0.6, (0, 0, 255), 2)
+    cv2.imshow("flappybird", observation)
+    cv2.waitKey(5)
     
     reward= env.act(actionset[action])
     obs = list(env.getGameState().values())
@@ -58,6 +58,19 @@ while True:
     done = env.game_over()
     episode_reward += reward
     if done:
+        # 游戏结束窗口
+        observation = env.getScreenRGB()
+        score  = env.score()
+        # 格式转换
+        observation = cv2.cvtColor(observation,cv2.COLOR_RGB2BGR)
+        # 选择90度
+        observation = cv2.transpose(observation)
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        observation = cv2.putText(observation, "Gameover!", (50, 220), font, 1.2, (0, 0, 255), 2)
+        observation = cv2.putText(observation, "Your score:"+str(int(score)), (10, 250), font, 1.0, (255, 255, 255), 2)
+        cv2.imshow("flappybird", observation)
+        cv2.waitKey(0)
         break
-print("episode_reward:",episode_reward)
 cv2.destroyAllWindows()
+print("episode_reward:",episode_reward)
+
